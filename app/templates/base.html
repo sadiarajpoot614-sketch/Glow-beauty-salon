@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Glow Beauty Salon{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a href="/" class="logo">
+        <span class="logo-icon">✦</span>
+        <span>Glow Beauty Salon</span>
+    </a>
+
+    <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/about">About Us</a>
+        <a href="/contact" class="nav-button">Book Appointment</a>
+
+        {% if user %}
+            <span class="welcome-user">Hi, {{ user.name }}</span>
+            <a href="/logout" class="logout-button">Logout</a>
+        {% else %}
+            <a href="/login" class="login-button">Login</a>
+            <a href="/signup" class="signup-button">Sign Up</a>
+        {% endif %}
+    </nav>
+
+</header>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+            <h2>Glow Beauty Salon</h2>
+            <p>
+                Where beauty meets confidence.
+                Discover personalized beauty experiences
+                designed especially for you.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <a href="/">Home</a>
+            <a href="/services">Services</a>
+            <a href="/about">About Us</a>
+            <a href="/contact">Book Appointment</a>
+        </div>
+
+        <div class="footer-contact">
+            <h4>Salon Hours</h4>
+            <p>Monday – Saturday</p>
+            <strong>10:00 AM – 8:00 PM</strong>
+            <p>Sunday: By Appointment</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Glow Beauty Salon. All rights reserved.</p>
+        <p>✦ Beauty • Confidence • Elegance</p>
+    </div>
+
+</footer>
+
+{% if user %}
+<script>
+    // Auto logout after 10 minutes of inactivity
+    let inactivityTimer;
+
+    function resetInactivityTimer() {
+        clearTimeout(inactivityTimer);
+
+        inactivityTimer = setTimeout(function () {
+            window.location.href = "/logout";
+        }, 10 * 60 * 1000);
+    }
+
+    document.addEventListener("mousemove", resetInactivityTimer);
+    document.addEventListener("keydown", resetInactivityTimer);
+    document.addEventListener("click", resetInactivityTimer);
+    document.addEventListener("scroll", resetInactivityTimer);
+
+    resetInactivityTimer();
+</script>
+{% endif %}
+
+</body>
+</html>

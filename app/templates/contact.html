@@ -1,0 +1,777 @@
+﻿
+{% extends "base.html" %}
+
+{% block title %}Book an Appointment | Glow Beauty Salon{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+    <div class="hero-content" style="text-align:center; margin:0 auto;">
+
+        <p class="badge">GLOW BEAUTY SALON</p>
+
+        <h1>
+            Your Beauty,
+            <span>Your Time.</span>
+        </h1>
+
+        <p class="hero-text" style="margin-left:auto; margin-right:auto;">
+            Book your personalized beauty session with our professional team.
+            Verify your email and choose an available appointment time.
+        </p>
+
+    </div>
+</section>
+
+
+<!-- =========================
+     ONLINE BOOKING
+========================= -->
+
+<section class="services-preview">
+
+    <p class="section-label">ONLINE BOOKING</p>
+
+    <h2>Schedule Your Beauty Session</h2>
+
+    <p style="
+        max-width:650px;
+        margin:0 auto 35px;
+        text-align:center;
+        opacity:.75;
+        line-height:1.7;
+    ">
+        Secure your appointment in a few simple steps.
+        Your email will be verified before your booking is confirmed.
+    </p>
+
+
+    {% if request.query_params.get("success") %}
+
+    <div style="
+        max-width:750px;
+        margin:0 auto 30px;
+        padding:18px;
+        border-radius:12px;
+        background:#243a2c;
+        border:1px solid #4d795d;
+        color:#c8f1d3;
+        text-align:center;
+    ">
+        ✓ Your appointment has been booked successfully!
+        <br>
+        <small>Confirmation details have been sent to your email.</small>
+    </div>
+
+    {% endif %}
+
+
+    <!-- =========================
+         FORM
+    ========================= -->
+
+    <form
+        method="POST"
+        action="/contact"
+        id="appointmentForm"
+        style="
+            max-width:800px;
+            margin:0 auto;
+            text-align:left;
+            background:#1c151d;
+            padding:35px;
+            border-radius:22px;
+            border:1px solid #30232d;
+            box-shadow:0 20px 60px rgba(0,0,0,.25);
+        "
+    >
+
+        <!-- CUSTOMER DETAILS -->
+
+        <div style="margin-bottom:25px;">
+
+            <h3 style="
+                margin-bottom:18px;
+                text-align:center;
+                color:#ffffff;
+                font-size:22px;
+            ">
+                01. Your Details
+            </h3>
+
+
+            <div style="
+                display:grid;
+                grid-template-columns:1fr 1fr;
+                gap:18px;
+            ">
+
+                <div>
+
+                    <label>Full Name</label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Your full name"
+                        required
+                        style="
+                            width:100%;
+                            padding:14px;
+                            margin-top:7px;
+                        "
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Phone Number</label>
+
+                    <input
+                        type="tel"
+                        name="phone"
+                        placeholder="03XX XXXXXXX"
+                        required
+                        style="
+                            width:100%;
+                            padding:14px;
+                            margin-top:7px;
+                        "
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div style="margin-top:18px;">
+
+                <label>Email Address</label>
+
+                <div style="
+                    display:flex;
+                    gap:10px;
+                    margin-top:7px;
+                ">
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="your@email.com"
+                        required
+                        style="
+                            width:100%;
+                            padding:14px;
+                        "
+                    >
+
+                    <button
+                        type="button"
+                        id="sendOtpBtn"
+                        class="btn primary"
+                        style="
+                            border:none;
+                            cursor:pointer;
+                            white-space:nowrap;
+                        "
+                    >
+                        Send OTP
+                    </button>
+
+                </div>
+
+                <small
+                    id="otpMessage"
+                    style="
+                        display:block;
+                        margin-top:8px;
+                        opacity:.8;
+                    "
+                ></small>
+
+            </div>
+
+
+            <!-- OTP -->
+
+            <div
+                id="otpSection"
+                style="
+                    display:none;
+                    margin-top:18px;
+                    padding:18px;
+                    border-radius:12px;
+                    background:#251b26;
+                    border:1px solid #392b38;
+                "
+            >
+
+                <label>Enter Verification Code</label>
+
+                <div style="
+                    display:flex;
+                    gap:10px;
+                    margin-top:8px;
+                ">
+
+                    <input
+                        type="text"
+                        id="otp"
+                        maxlength="6"
+                        inputmode="numeric"
+                        placeholder="6-digit OTP"
+                        style="
+                            width:100%;
+                            padding:14px;
+                            letter-spacing:4px;
+                            text-align:center;
+                            font-size:18px;
+                        "
+                    >
+
+                    <button
+                        type="button"
+                        id="verifyOtpBtn"
+                        class="btn primary"
+                        style="
+                            border:none;
+                            cursor:pointer;
+                            white-space:nowrap;
+                        "
+                    >
+                        Verify
+                    </button>
+
+                </div>
+
+                <small
+                    id="verifyMessage"
+                    style="
+                        display:block;
+                        margin-top:8px;
+                    "
+                ></small>
+
+            </div>
+
+        </div>
+
+
+        <!-- SERVICE -->
+
+        <div style="margin-bottom:25px;">
+
+            <h3 style="
+                margin-bottom:18px;
+                text-align:center;
+                color:#ffffff;
+                font-size:22px;
+            ">
+                02. Choose Your Service
+            </h3>
+
+            <select
+                name="service"
+                id="service"
+                required
+                style="
+                    width:100%;
+                    padding:14px;
+                "
+            >
+
+                <option value="">
+                    Select a beauty service
+                </option>
+
+                <option value="Hair Styling">
+                    Hair Styling — Rs. 2,000 · 60 min
+                </option>
+
+                <option value="Hair Coloring">
+                    Hair Coloring — Rs. 4,000 · 120 min
+                </option>
+
+                <option value="Facial & Skincare">
+                    Facial & Skincare — Rs. 2,500 · 60 min
+                </option>
+
+                <option value="Makeup">
+                    Makeup — Rs. 3,500 · 90 min
+                </option>
+
+                <option value="Bridal Makeup">
+                    Bridal Makeup — Rs. 8,000 · 120 min
+                </option>
+
+                <option value="Manicure & Pedicure">
+                    Manicure & Pedicure — Rs. 2,000 · 90 min
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- DATE AND TIME -->
+
+        <div style="margin-bottom:25px;">
+
+            <h3 style="
+                margin-bottom:18px;
+                text-align:center;
+                color:#ffffff;
+                font-size:22px;
+            ">
+                03. Choose Date & Time
+            </h3>
+
+            <div style="
+                display:grid;
+                grid-template-columns:1fr 1fr;
+                gap:18px;
+            ">
+
+                <div>
+
+                    <label>Appointment Date</label>
+
+                    <input
+                        type="date"
+                        id="appointmentDate"
+                        name="appointment_date"
+                        required
+                        style="
+                            width:100%;
+                            padding:14px;
+                            margin-top:7px;
+                        "
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Available Time</label>
+
+                    <select
+                        id="appointmentTime"
+                        name="appointment_time"
+                        required
+                        style="
+                            width:100%;
+                            padding:14px;
+                            margin-top:7px;
+                        "
+                    >
+
+                        <option value="">
+                            Select a date first
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <small style="
+                display:block;
+                margin-top:10px;
+                opacity:.7;
+                text-align:center;
+            ">
+                🕐 Salon hours: 10:00 AM – 8:00 PM
+            </small>
+
+        </div>
+
+
+        <!-- MESSAGE -->
+
+        <div style="margin-bottom:25px;">
+
+            <h3 style="
+                margin-bottom:18px;
+                text-align:center;
+                color:#ffffff;
+                font-size:22px;
+            ">
+                04. Additional Message
+            </h3>
+
+            <textarea
+                name="message"
+                rows="5"
+                placeholder="Tell us anything we should know..."
+                style="
+                    width:100%;
+                    padding:14px;
+                    resize:vertical;
+                "
+            ></textarea>
+
+        </div>
+
+
+        <!-- BOOK -->
+
+        <button
+            type="submit"
+            id="bookBtn"
+            class="btn primary"
+            disabled
+            style="
+                border:none;
+                margin-top:10px;
+                cursor:pointer;
+                width:100%;
+                padding:16px;
+                font-size:16px;
+            "
+        >
+            🔒 Verify Email to Book
+        </button>
+
+
+        <p
+            id="bookingNote"
+            style="
+                text-align:center;
+                margin-top:12px;
+                font-size:13px;
+                opacity:.65;
+            "
+        >
+            Please verify your email before booking.
+        </p>
+
+    </form>
+
+</section>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+let emailVerified = false;
+
+
+/* MINIMUM DATE */
+
+const dateInput =
+    document.getElementById("appointmentDate");
+
+const today = new Date();
+
+const yyyy = today.getFullYear();
+
+const mm =
+    String(today.getMonth() + 1).padStart(2, "0");
+
+const dd =
+    String(today.getDate()).padStart(2, "0");
+
+dateInput.min =
+    `${yyyy}-${mm}-${dd}`;
+
+
+/* SEND OTP */
+
+document
+    .getElementById("sendOtpBtn")
+    .addEventListener("click", async function () {
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const message =
+            document.getElementById("otpMessage");
+
+        if (!email) {
+
+            message.textContent =
+                "Please enter your email address.";
+
+            return;
+        }
+
+        this.disabled = true;
+
+        this.textContent = "Sending...";
+
+        const formData = new FormData();
+
+        formData.append("email", email);
+
+        try {
+
+            const response = await fetch(
+                "/send-otp",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            const data =
+                await response.json();
+
+            if (data.success) {
+
+                document
+                    .getElementById("otpSection")
+                    .style.display = "block";
+
+                message.textContent =
+                    "✓ OTP sent to your email. Check your inbox.";
+
+            } else {
+
+                message.textContent =
+                    data.message;
+
+            }
+
+        } catch (error) {
+
+            message.textContent =
+                "Unable to send OTP. Please try again.";
+
+        }
+
+        this.disabled = false;
+
+        this.textContent = "Send OTP";
+
+    });
+
+
+/* VERIFY OTP */
+
+document
+    .getElementById("verifyOtpBtn")
+    .addEventListener("click", async function () {
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const otp =
+            document.getElementById("otp").value.trim();
+
+        const message =
+            document.getElementById("verifyMessage");
+
+        if (!otp || otp.length !== 6) {
+
+            message.textContent =
+                "Please enter the 6-digit OTP.";
+
+            return;
+        }
+
+        const formData = new FormData();
+
+        formData.append("email", email);
+
+        formData.append("otp", otp);
+
+        this.disabled = true;
+
+        this.textContent = "Checking...";
+
+        try {
+
+            const response = await fetch(
+                "/verify-otp",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            const data =
+                await response.json();
+
+            if (data.success) {
+
+                emailVerified = true;
+
+                message.textContent =
+                    "✓ Email verified successfully.";
+
+                message.style.color =
+                    "#9be7ad";
+
+                document
+                    .getElementById("email")
+                    .readOnly = true;
+
+                document
+                    .getElementById("sendOtpBtn")
+                    .disabled = true;
+
+                const bookBtn =
+                    document.getElementById("bookBtn");
+
+                bookBtn.disabled = false;
+
+                bookBtn.textContent =
+                    "✓ Book Appointment";
+
+                document
+                    .getElementById("bookingNote")
+                    .textContent =
+                    "Your email is verified. You can now book your appointment.";
+
+            } else {
+
+                message.textContent =
+                    data.message;
+
+            }
+
+        } catch (error) {
+
+            message.textContent =
+                "Verification failed. Please try again.";
+
+        }
+
+        this.disabled = false;
+
+        this.textContent = "Verify";
+
+    });
+
+
+/* LOAD AVAILABLE TIME SLOTS */
+
+dateInput.addEventListener(
+    "change",
+    async function () {
+
+        const date = this.value;
+
+        const timeSelect =
+            document.getElementById("appointmentTime");
+
+        if (!date) {
+
+            timeSelect.innerHTML =
+                '<option value="">Select a date first</option>';
+
+            return;
+        }
+
+        timeSelect.innerHTML =
+            '<option value="">Loading available times...</option>';
+
+        try {
+
+            const response = await fetch(
+                `/available-slots?date=${date}`
+            );
+
+            const data =
+                await response.json();
+
+            timeSelect.innerHTML =
+                '<option value="">Select available time</option>';
+
+            data.slots.forEach(function (slot) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value =
+                    slot.time;
+
+                option.textContent =
+                    slot.time +
+                    " — " +
+                    (slot.available
+                        ? "Available"
+                        : "Booked");
+
+                option.disabled =
+                    !slot.available;
+
+                timeSelect.appendChild(option);
+
+            });
+
+        } catch (error) {
+
+            timeSelect.innerHTML =
+                '<option value="">Unable to load times</option>';
+
+        }
+
+    }
+);
+
+
+/* FORM PROTECTION */
+
+document
+    .getElementById("appointmentForm")
+    .addEventListener("submit", function (event) {
+
+        if (!emailVerified) {
+
+            event.preventDefault();
+
+            alert(
+                "Please verify your email with OTP first."
+            );
+
+        }
+
+    });
+
+</script>
+
+
+<!-- =========================
+     MOBILE
+========================= -->
+
+<style>
+
+@media (max-width: 700px) {
+
+    form > div > div,
+    form div[style*="grid-template-columns"] {
+
+        grid-template-columns: 1fr !important;
+
+    }
+
+    #sendOtpBtn,
+    #verifyOtpBtn {
+
+        padding: 12px 14px;
+
+    }
+
+}
+
+</style>
+
+
+{% endblock %}
+

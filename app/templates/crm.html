@@ -1,0 +1,124 @@
+﻿{% extends "base.html" %}
+
+{% block title %}CRM | Glow Beauty Salon{% endblock %}
+
+{% block content %}
+
+<section class="crm-page">
+
+    <div class="crm-header">
+        <div>
+            <p class="section-label">ADMIN CRM</p>
+            <h1>Appointment <span>Dashboard</span></h1>
+            <p>Manage customer appointments and requests.</p>
+        </div>
+
+        <a href="/contact" class="btn primary">+ New Appointment</a>
+    </div>
+
+    <div class="crm-stats">
+
+        <div class="crm-stat">
+            <span>Total Appointments</span>
+            <strong>{{ appointments|length }}</strong>
+        </div>
+
+        <div class="crm-stat">
+            <span>New Requests</span>
+            <strong>
+                {{ appointments|selectattr("status", "equalto", "New")|list|length }}
+            </strong>
+        </div>
+
+        <div class="crm-stat">
+            <span>Available Services</span>
+            <strong>6</strong>
+        </div>
+
+    </div>
+
+    <div class="crm-table-container">
+
+        {% if appointments %}
+
+        <table class="crm-table">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for appointment in appointments %}
+
+                <tr>
+                    <td>#{{ appointment.id }}</td>
+
+                    <td>
+                        <strong>{{ appointment.name }}</strong>
+                    </td>
+
+                    <td>
+                        {{ appointment.email }}<br>
+                        <small>{{ appointment.phone }}</small>
+                    </td>
+
+                    <td>{{ appointment.service }}</td>
+
+                    <td>{{ appointment.appointment_date }}</td>
+
+                    <td>{{ appointment.appointment_time }}</td>
+
+                    <td>
+                        <span class="status">
+                            {{ appointment.status }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <form method="POST"
+                              action="/crm/delete/{{ appointment.id }}"
+                              onsubmit="return confirm('Delete this appointment?');">
+
+                            <button class="delete-btn" type="submit">
+                                Delete
+                            </button>
+
+                        </form>
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty-crm">
+            <div class="empty-icon">♡</div>
+            <h2>No Appointments Yet</h2>
+            <p>Customer appointments will appear here.</p>
+
+            <a href="/contact" class="btn primary">
+                Create Appointment
+            </a>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

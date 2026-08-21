@@ -1,0 +1,181 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Book Appointment | Glow Beauty Salon{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+
+        <p class="badge">BOOK YOUR VISIT</p>
+
+        <h1>
+            Book Your
+            <span>Appointment.</span>
+        </h1>
+
+        <p class="hero-text">
+            Choose your preferred service, date and time.
+            Our team will contact you to confirm your appointment.
+        </p>
+
+    </div>
+</section>
+
+
+<section class="services-preview">
+
+    <p class="section-label">APPOINTMENT</p>
+
+    <h2>Schedule Your Beauty Session</h2>
+
+    {% if request.query_params.get("success") %}
+        <div style="
+            max-width:700px;
+            margin:0 auto 30px;
+            padding:15px;
+            border-radius:10px;
+            background:#243a2c;
+            border:1px solid #4d795d;
+            color:#c8f1d3;
+        ">
+            ✓ Your appointment request has been submitted successfully!
+        </div>
+    {% endif %}
+
+    <form
+        method="POST"
+        action="/contact"
+        style="
+            max-width:750px;
+            margin:0 auto;
+            text-align:left;
+            background:#1c151d;
+            padding:35px;
+            border-radius:18px;
+            border:1px solid #30232d;
+        "
+    >
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+
+            <div>
+                <label>Full Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Your Name"
+                    required
+                    style="width:100%; padding:14px; margin-top:7px;"
+                >
+            </div>
+
+            <div>
+                <label>Email Address</label>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="your@email.com"
+                    required
+                    style="width:100%; padding:14px; margin-top:7px;"
+                >
+            </div>
+
+        </div>
+
+
+        <div style="margin-top:18px;">
+            <label>Phone Number</label>
+
+            <input
+                type="text"
+                name="phone"
+                placeholder="03XX XXXXXXX"
+                required
+                style="width:100%; padding:14px; margin-top:7px;"
+            >
+        </div>
+
+
+        <div style="margin-top:18px;">
+
+            <label>Select Service</label>
+
+            <select
+                name="service"
+                required
+                style="width:100%; padding:14px; margin-top:7px;"
+            >
+
+                <option value="">Choose a service</option>
+                <option value="Hair Styling">Hair Styling</option>
+                <option value="Hair Coloring">Hair Coloring</option>
+                <option value="Facial & Skincare">Facial & Skincare</option>
+                <option value="Makeup">Makeup</option>
+                <option value="Bridal Makeup">Bridal Makeup</option>
+                <option value="Manicure & Pedicure">Manicure & Pedicure</option>
+
+            </select>
+
+        </div>
+
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px;">
+
+            <div>
+
+                <label>Preferred Date</label>
+
+                <input
+                    type="date"
+                    name="appointment_date"
+                    required
+                    style="width:100%; padding:14px; margin-top:7px;"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>Preferred Time</label>
+
+                <input
+                    type="time"
+                    name="appointment_time"
+                    required
+                    style="width:100%; padding:14px; margin-top:7px;"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div style="margin-top:18px;">
+
+            <label>Message</label>
+
+            <textarea
+                name="message"
+                rows="5"
+                placeholder="Tell us anything we should know..."
+                style="width:100%; padding:14px; margin-top:7px;"
+            ></textarea>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="btn primary"
+            style="border:none; margin-top:22px; cursor:pointer; width:100%;"
+        >
+            Book Appointment
+        </button>
+
+    </form>
+
+</section>
+
+{% endblock %}
